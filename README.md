@@ -1,2 +1,23 @@
 # truefx-downloader
 Python script to download all historical FX data from www.truefx.com
+
+ TrueFX download script
+
+This script will download all available historical data from https://www.truefx.com
+
+Some things you will need to do:
+1. sign up for an account with www.truefx.com ( it's free )
+2. edit the script to include your username and password in the script 
+3. edit the script to ensure files are downloaded to your preferred destination by editing the path - i.e. '/home/<yourlocalusername>/somedirthatexistsalready' 
+
+Once ready to go, simply do:
+$ python downloader.py
+
+I would recommend doing this overnight. there are 15 currencies, 9 years worth of data and 12 files per currency per year @ ~30 - 70Mb each. The connection truefx has isn't terribly fast, so you'll be waiting a while.
+
+TODOs:
+1. make it possible to select only certain currencies
+2. make it possible to select on certain years
+3. more robust error checking ( ok, some checking )
+
+This script is pretty hacky. If the truefx.com folk change things on the website html, this will likely break. But as-is - it works fine.
