@@ -11,9 +11,11 @@ Some things you will need to do:
 3. edit the script to ensure files are downloaded to your preferred destination by editing the path - i.e. '/home/<yourlocalusername>/somedirthatexistsalready' 
 
 Once ready to go, simply do:
-$ python downloader.py
+$ python download.py
 
 I would recommend doing this overnight. there are 15 currencies, 9 years worth of data and 12 files per currency per year @ ~30 - 70Mb each. The connection truefx has isn't terribly fast, so you'll be waiting a while.
+
+note: if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
 
 TODOs:
 1. make it possible to select only certain currencies
