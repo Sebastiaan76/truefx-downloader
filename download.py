@@ -15,7 +15,6 @@ def download_file(url):
             if chunk:
                 f.write(chunk)
                 f.flush()
-
     return
 
 # this function traverses the truefx download folders one by one until we find the zip files we want
@@ -32,7 +31,6 @@ def traverse(html, session):
 
         elif 'dl-zip' in str(link.get_attribute_list('class')):
             download_file('https://www.truefx.com' + str(link.get('href')))
-
     return
 
 # this function establishes the session and parses the main download page. We then call traverse()
