@@ -15,7 +15,7 @@ $ python download.py
 
 I would recommend doing this overnight. there are 15 currencies, 9 years worth of data. So (15 x 12) x 9years = 1620 files @ ~30 - 70Mb each (although 2009 starts in May - so not quite 1620 ). The connection truefx has isn't terribly fast, so you'll be waiting a while. Also, you are looking at 70 - 80Gb of disk space - so might be worth streaming this straight to the NAS, or clearing some space if you intend to download the whole lot.
 
-Unzipped CSV files are ~600Mb, so bear this in mind if you plan to add to this script to unzip, add to database etc. 
+Unzipped CSV files are ~600Mb each, so bear this in mind if you plan to add to this script to unzip, add to database etc. 
 
 note: if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
 
