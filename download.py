@@ -38,7 +38,7 @@ def traverse(html, session):
 # this function establishes the session and parses the main download page. We then call traverse()
 def find_files(url):
     # Put your truefx username and password in place of <username> and <password> leave the ' ' quotes
-    payload = {'USERNAME': '', 'PASSWORD': ''}
+    payload = {'USERNAME': '<username>', 'PASSWORD': '<password>'}
 
     with requests.Session() as session:
         session.post('https://www.truefx.com/?page=loginz', data=payload)
