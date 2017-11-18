@@ -16,7 +16,7 @@ def download_file(url):
                 f.write(chunk)
                 f.flush()
 
-    return local_filename
+    return
 
 # this function traverses the truefx download folders one by one until we find the zip files we want
 # once it finds them - we call the download_file() function
