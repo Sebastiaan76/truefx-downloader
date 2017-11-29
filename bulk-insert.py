@@ -19,13 +19,14 @@ def get_files(start_dir):
     print("---------------------" + "-" * len(start_dir))
     final_list = []
     for f in csv_files:
+        print("{}...".format(f), end="")
         f_hash = get_hash(start_dir + '/' + f)
         pair = (f, f_hash)
         final_list.append(pair)
-    for f in final_list:
-        print("{}...signature identified".format(f[0]))
+        print("signature identified")
     print("-" * 60)
     return final_list
+
 
 
 # checks if table already exists in the DB
