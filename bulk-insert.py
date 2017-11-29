@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import hashlib
 import os
-# TODO make function to compare hashes when importing to avoid duplicate imports, refactor, tidy up
+
 
 # returns Sha512 hash of file
 def get_hash(file_path):
@@ -16,70 +16,107 @@ def get_files(start_dir):
     raw_files = os.listdir(start_dir)
     csv_files = [f for f in raw_files if f.split('.')[-1] == 'csv']
     print("identifying files in {}".format(start_dir))
+    print("---------------------" + "-" * len(start_dir))
     final_list = []
     for f in csv_files:
         f_hash = get_hash(start_dir + '/' + f)
         pair = (f, f_hash)
         final_list.append(pair)
     for f in final_list:
-        print("{}...hashed".format(f[0]))
+        print("{}...signature identified".format(f[0]))
+    print("-" * 60)
     return final_list
 
 
+# checks if table already exists in the DB
+def check_exists(table, cur):
+    sql = "SELECT to_regclass('public." + table + "')"
+    cur.execute(sql)
+    result = cur.fetchone()
+    if str(result[0]).upper() == table.upper():
+        return True
+    else:
+        return False
+
+
+# checks DB metadata table to see if a file with the same checksum has been uploaded previously
+def check_hash_exists(hash_to_check, cur):
+    sql = "SELECT sha512 FROM HASHES_TABLE"
+    cur.execute(sql)
+    result = cur.fetchall()
+    h_list = []
+    for l in result:
+        h_list.append(l[0])
+
+    is_in = False
+    for item in h_list:
+
+        if item == hash_to_check:
+            is_in = True
+        else:
+            pass
+    return is_in
+
+
+# helper function to abstract the actual copy_to() functionality
+def copy_to_db(csv_file, table_name, cur):
+    start = time.time()
+    print("importing file: {}".format(str(csv_file.split('/')[-1])))
+    with open(csv_file, 'r') as import_file:
+        row_count = 0
+        for lines in import_file:
+            row_count += 1
+        import_file.seek(0)
+        cur.copy_from(import_file, table_name, ',')
+        elapsed = time.time() - start
+        print("imported {:,} rows in: {:.2f} seconds".format(row_count, elapsed))
+        print("------------------------------------")
+    return
+
+
+# main import function
 def import_files(start_dir):
+    # connect to the DB
     Database = 'dbname=truefxdb user=sebastiaan'
     conn = psycopg2.connect(Database)
     cur = conn.cursor()
     print("connecting to database...")
+
+    # get list of files in the directory and filter only CSV files
     file_list = get_files(start_dir)
     for f in file_list:
         table_name = str(f[0].split('-')[0]) + "_ticks"
         table_name = table_name.upper()
-        check_table = "SELECT to_regclass('public." + table_name + "')"
-        check_hashes_table = "SELECT to_regclass('public.HASHES_TABLE')"
-        imported_files = "CREATE TABLE HASHES_TABLE (file_name text, sha512 text, table_imported text, date_imported timestamp)"
-
-        create_table = "CREATE TABLE " + table_name + " (currency text, datetime timestamp, bid numeric, ask numeric)"
         csv_file = str(start_dir) + '/' + str(f[0])
 
-        cur.execute(check_table)
-        check = cur.fetchone()
-        if str(check[0]).upper() == table_name.upper():
-            print("Table '{}' exists - adding to existing".format(check[0]))
+        # start the process with checks and balances along the way
+        if check_exists(table_name, cur):
             conn.commit()
         else:
+            create_table = "CREATE TABLE " + table_name + " (currency text, datetime timestamp, bid numeric, ask numeric)"
             cur.execute(create_table)
             conn.commit()
             print("created table: {}".format(table_name))
 
-        start = time.time()
-        # import the contents of 'csv_file' into the table
-        print("importing file: {}".format(str(csv_file.split('/')[-1])))
-        with open(csv_file, 'r') as import_file:
-            row_count = 0
-            for lines in import_file:
-                row_count += 1
-            import_file.seek(0)
-            cur.copy_from(import_file, table_name, ',')
-
         hashes_sql = "INSERT INTO HASHES_TABLE VALUES (\'{}\', \'{}\', \'{}\', \'{}\')".format(csv_file.split('/')[-1], f[1], table_name, str(datetime.now()))
-        cur.execute(check_hashes_table)
-        if str(cur.fetchone()[0]).upper() == 'HASHES_TABLE':
-            print("adding import details")
-
-            cur.execute(hashes_sql)
-            conn.commit()
+        if check_exists('HASHES_TABLE', cur):
+            if check_hash_exists(f[1], cur):
+                print("{} already imported...skipping".format(f[0]))
+                conn.commit()
+            else:
+                cur.execute(hashes_sql)
+                copy_to_db(csv_file, table_name, cur)
+                conn.commit()
         else:
-            print("creating log table to track imports")
-            cur.execute(imported_files)
+            print("creating metadata table")
+            cur.execute("CREATE TABLE HASHES_TABLE (file_name text, sha512 text, table_imported text, date_imported timestamp)")
+            copy_to_db(csv_file, table_name, cur)
             cur.execute(hashes_sql)
             conn.commit()
 
-        conn.commit()
-        elapsed = time.time() - start
-        print("imported {:,} rows in: {:.2f} seconds".format(row_count, elapsed))
     conn.close()
 
-import_files('/home/seb-i3/truefx')
+# call the function
+import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/EURUSD')
 
 
