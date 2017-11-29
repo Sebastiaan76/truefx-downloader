@@ -56,8 +56,6 @@ def check_hash_exists(hash_to_check, cur):
 
         if item == hash_to_check:
             is_in = True
-        else:
-            pass
     return is_in
 
 
@@ -88,9 +86,8 @@ def import_files(start_dir):
     # get list of files in the directory and filter only CSV files
     file_list = get_files(start_dir)
     for f in file_list:
-        table_name = str(f[0].split('-')[0]) + "_ticks"
-        table_name = table_name.upper()
-        csv_file = str(start_dir) + '/' + str(f[0])
+        table_name = "{}_ticks".format(str(f[0].split('-')[0])).upper()
+        csv_file = "{}/{}".format(str(start_dir), str(f[0]))
 
         # start the process with checks and balances along the way
         if check_exists(table_name, cur):
@@ -119,7 +116,8 @@ def import_files(start_dir):
 
     conn.close()
 
-# call the function
-import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/USDJPY')
+
+if __name__ == "__main__":
+    import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/USDJPY')
 
 
