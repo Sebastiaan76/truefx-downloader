@@ -1,7 +1,7 @@
 # truefx-downloader
 Python script to download all historical FX data from www.truefx.com
 
- TrueFX download script
+ TrueFX download script and
  Bulk Import script
 
 This script will download all available historical data from https://www.truefx.com
