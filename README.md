@@ -1,7 +1,8 @@
 # truefx-downloader
 Python script to download all historical FX data from www.truefx.com
 
- TrueFX download script
+ TrueFX download script and
+ Bulk Import script
 
 This script will download all available historical data from https://www.truefx.com
 
@@ -25,3 +26,8 @@ TODOs:
 3. more robust error checking ( ok, some checking )
 
 This script is pretty hacky. If the truefx.com folk change things on the website html, this will likely break. But as-is - it works fine.
+
+Bulk-insert.py
+
+This script will take a dir with the resulting CSV files (once you've unzipped them) and load a Postgres Database with the tick data. 
+You'll need to create the database & user first.
