@@ -120,6 +120,6 @@ def import_files(start_dir):
     conn.close()
 
 # call the function
-import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/EURUSD')
+import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/USDJPY')
 
 
