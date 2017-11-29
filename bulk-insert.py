@@ -1,22 +1,24 @@
 import psycopg2
-import time
+from time import time
 from datetime import datetime
-import hashlib
+from hashlib import sha512
 import os
 
 
 # returns Sha512 hash of file
 def get_hash(file_path):
     with open(file_path, 'rb') as f:
-        return hashlib.sha512(f.read()).hexdigest()
+        return sha512(f.read()).hexdigest()
 
 
 # gets list of csv files for import and returns list of tuples [(<file>, <hash>), (...)]
 def get_files(start_dir):
     raw_files = os.listdir(start_dir)
     csv_files = [f for f in raw_files if f.split('.')[-1] == 'csv']
+
     print("identifying files in {}".format(start_dir))
     print("---------------------" + "-" * len(start_dir))
+
     final_list = []
     for f in csv_files:
         print("{}...".format(f), end="")
@@ -25,8 +27,8 @@ def get_files(start_dir):
         final_list.append(pair)
         print("signature identified")
     print("-" * 60)
-    return final_list
 
+    return final_list
 
 
 # checks if table already exists in the DB
@@ -61,7 +63,7 @@ def check_hash_exists(hash_to_check, cur):
 
 # helper function to abstract the actual copy_to() functionality
 def copy_to_db(csv_file, table_name, cur):
-    start = time.time()
+    start = time()
     print("importing file: {}".format(str(csv_file.split('/')[-1])))
     with open(csv_file, 'r') as import_file:
         row_count = 0
@@ -69,7 +71,7 @@ def copy_to_db(csv_file, table_name, cur):
             row_count += 1
         import_file.seek(0)
         cur.copy_from(import_file, table_name, ',')
-        elapsed = time.time() - start
+        elapsed = time() - start
         print("imported {:,} rows in: {:.2f} seconds".format(row_count, elapsed))
         print("------------------------------------")
     return
