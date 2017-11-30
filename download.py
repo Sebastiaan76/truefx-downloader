@@ -5,7 +5,6 @@ from clint.textui import progress
 def download_file(url, download_path):
     """this function downloads the files - change the path below to your preferred full path
     make sure you have permission to write to the directory you choose"""
-    #local_filename = '/home/seb-i3/truefx/' + url.split('/')[-1]
     local_filename = download_path + url.split('/')[-1]
     print('downloading: {}'.format(url))
     r = requests.get(url, stream=True)
