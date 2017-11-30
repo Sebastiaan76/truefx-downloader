@@ -5,14 +5,14 @@ from hashlib import sha512
 import os
 
 
-# returns Sha512 hash of file
 def get_hash(file_path):
+    """returns Sha512 hash of file"""
     with open(file_path, 'rb') as f:
         return sha512(f.read()).hexdigest()
 
 
-# gets list of csv files for import and returns list of tuples [(<file>, <hash>), (...)]
 def get_files(start_dir):
+    """gets list of csv files for import and returns list of tuples [(<file>, <hash>), (...)]"""
     raw_files = os.listdir(start_dir)
     csv_files = [f for f in raw_files if f.split('.')[-1] == 'csv']
 
@@ -31,8 +31,8 @@ def get_files(start_dir):
     return final_list
 
 
-# checks if table already exists in the DB
 def check_exists(table, cur):
+    """checks if table already exists in the DB"""
     sql = "SELECT to_regclass('public." + table + "')"
     cur.execute(sql)
     result = cur.fetchone()
@@ -42,8 +42,8 @@ def check_exists(table, cur):
         return False
 
 
-# checks DB metadata table to see if a file with the same checksum has been uploaded previously
 def check_hash_exists(hash_to_check, cur):
+    """checks DB metadata table to see if a file with the same checksum has been uploaded previously"""
     sql = "SELECT sha512 FROM HASHES_TABLE"
     cur.execute(sql)
     result = cur.fetchall()
@@ -59,8 +59,8 @@ def check_hash_exists(hash_to_check, cur):
     return is_in
 
 
-# helper function to abstract the actual copy_to() functionality
 def copy_to_db(csv_file, table_name, cur):
+    """helper function to abstract the actual copy_to() functionality"""
     start = time()
     print("importing file: {}".format(str(csv_file.split('/')[-1])))
     with open(csv_file, 'r') as import_file:
@@ -75,10 +75,11 @@ def copy_to_db(csv_file, table_name, cur):
     return
 
 
-# main import function
-def import_files(start_dir):
+def import_files(start_dir, db, username):
+    """main import function"""
+
     # connect to the DB
-    Database = 'dbname=truefxdb user=sebastiaan'
+    Database = 'dbname={} user={}'.format(db, username)
     conn = psycopg2.connect(Database)
     cur = conn.cursor()
     print("connecting to database...")
@@ -113,11 +114,10 @@ def import_files(start_dir):
             copy_to_db(csv_file, table_name, cur)
             cur.execute(hashes_sql)
             conn.commit()
-
     conn.close()
 
 
 if __name__ == "__main__":
-    import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/USDJPY')
+    import_files('/home/sebastiaan/Sebshare/TradeBot/zipfiles/USDJPY', 'truefxdb', 'sebastiaan')
 
 
