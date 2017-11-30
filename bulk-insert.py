@@ -65,7 +65,7 @@ def copy_to_db(csv_file, table_name, cur):
     print("importing file: {}".format(str(csv_file.split('/')[-1])))
     with open(csv_file, 'r') as import_file:
         row_count = 0
-        for lines in import_file:
+        for _ in import_file:
             row_count += 1
         import_file.seek(0)
         cur.copy_from(import_file, table_name, ',')
