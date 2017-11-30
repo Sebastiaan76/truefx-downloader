@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from clint.textui import progress
 
+
 def download_file(url, download_path):
     """this function downloads the files - change the path below to your preferred full path
     make sure you have permission to write to the directory you choose"""
@@ -16,6 +17,7 @@ def download_file(url, download_path):
                 f.write(chunk)
                 f.flush()
     return
+
 
 def traverse(html, session, download_path):
     """this function traverses the truefx download folders one by one until we find the zip files we want
@@ -32,6 +34,7 @@ def traverse(html, session, download_path):
         elif 'dl-zip' in str(link.get_attribute_list('class')):
             download_file('https://www.truefx.com' + str(link.get('href')), download_path)
     return
+
 
 def find_files(username, password, download_path):
     """this function establishes the session and parses the main download page. We then call traverse()"""
