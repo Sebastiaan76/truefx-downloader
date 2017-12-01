@@ -21,6 +21,7 @@ Usage: ./download.py truefx-username truefx-password [download-path] [currency1,
 3. If you have given a full path, you can then also specify specific currencies, and/or years and/or months
 
 Examples:
+
 $ ./downloader.py JohnUser Mypassword
 will download everything to current working directory
 
