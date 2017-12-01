@@ -10,6 +10,7 @@ currencies = ['AUDJPY', 'AUDNZD', 'AUDUSD', 'CADJPY', 'CHFJPY', 'EURCHF', 'EURGB
 months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
 years = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
 
+
 def download_file(url, download_path):
     """this function downloads the files - change the path below to your preferred full path
     make sure you have permission to write to the directory you choose"""
@@ -75,7 +76,9 @@ if __name__ == "__main__":
                 os.mkdir(sys.argv[3])
             if sys.argv[3][-1] != '/':
                 path = "{}/".format(sys.argv[3])
-                find_files(sys.argv[1], sys.argv[2], path)
+            else:
+                path = sys.argv[3]
+            find_files(sys.argv[1], sys.argv[2], path)
         elif len(sys.argv) == 5:
             path = sys.argv[3]
             currencies = sys.argv[4].rstrip().split(',')
