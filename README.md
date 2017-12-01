@@ -12,7 +12,7 @@ Some things you will need to do:
 1. sign up for an account with www.truefx.com ( it's free )
 2. save the script to your preferred location and chmod +755 download.py
 
-download.py takes a number of compulasary and optional commandline arguments
+download.py takes a number of required and optional commandline arguments
 
 Usage: ./download.py <truefx-username> <truefx-password> [download-path] [currency1,currency2,... year1,year2,... month1,month2,...]
 
