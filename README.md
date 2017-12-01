@@ -23,15 +23,22 @@ Usage: ./download.py truefx-username truefx-password [download-path] [currency1,
 Examples:
 
 $ ./downloader.py JohnUser Mypassword
+
 will download everything to current working directory
 
+
 $./downloader.py JohnUser Mypassword /home/JohnUser/Mydir
+
 Will download everything to Mydir
 
+
 $./downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD
+
 will download only USDJPY and AUDUSD. But will get all years/months available
 
+
 $.downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD 2017,2016 03,04
+
 will download only USDJPY and AUDUSD for March & April of 2016 and 2017
 
 spaces between the options, but no spaces between comma separated items, i.e. AUDUSD,USDJPY and not AUDUSD, USDJPY.
