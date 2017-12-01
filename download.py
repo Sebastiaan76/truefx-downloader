@@ -6,6 +6,9 @@ from clint.textui import progress
 import sys
 import os
 
+currencies = ['AUDJPY', 'AUDNZD', 'AUDUSD', 'CADJPY', 'CHFJPY', 'EURCHF', 'EURGBP', 'EURJPY', 'EURUSD', 'GBPJPY', 'GBPUSD', 'NZDUSD', 'USDCAD', 'USDCHF', 'USDJPY']
+months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+years = ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
 
 def download_file(url, download_path):
     """this function downloads the files - change the path below to your preferred full path
@@ -36,7 +39,10 @@ def traverse(html, session, download_path):
             traverse(next_html, session, download_path)
 
         elif 'dl-zip' in str(link.get_attribute_list('class')):
-            download_file('https://www.truefx.com' + str(link.get('href')), download_path)
+            for cur in currencies:
+                filename = link.get('href').split('/')[-1].split('.')[0].split('-')
+                if cur in str(link.get('href')) and filename[1] in years and filename[2] in months:
+                    download_file('https://www.truefx.com' + str(link.get('href')), download_path)
     return
 
 
@@ -52,8 +58,13 @@ def find_files(username, password, download_path):
     return
 
 if __name__ == "__main__":
+
     def main():
-        if len(sys.argv) <=2:
+        global currencies
+        global years
+        global months
+
+        if len(sys.argv) <=2 or len(sys.argv) > 7:
             print("\nUsage: python download.py <truefx-username> <password> [save path]\nIf no save path given, current directory is used")
             return 1
         elif len(sys.argv) == 3:
@@ -64,7 +75,21 @@ if __name__ == "__main__":
                 os.mkdir(sys.argv[3])
             if sys.argv[3][-1] != '/':
                 path = "{}/".format(sys.argv[3])
-            else:
-                path = sys.argv[3]
+                find_files(sys.argv[1], sys.argv[2], path)
+        elif len(sys.argv) == 5:
+            path = sys.argv[3]
+            currencies = sys.argv[4].rstrip().split(',')
             find_files(sys.argv[1], sys.argv[2], path)
+        elif len(sys.argv) == 6:
+            path = sys.argv[3]
+            currencies = sys.argv[4].rstrip().split(',')
+            years = sys.argv[5].rstrip().split(',')
+            find_files(sys.argv[1], sys.argv[2], path)
+        else:
+            path = sys.argv[3]
+            currencies = sys.argv[4].rstrip().split(',')
+            years = sys.argv[5].rstrip().split(',')
+            months = sys.argv[6]
+            find_files(sys.argv[1], sys.argv[2], path)
+
 main()
