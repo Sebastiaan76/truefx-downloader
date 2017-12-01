@@ -14,7 +14,7 @@ Some things you will need to do:
 
 download.py takes a number of required and optional commandline arguments
 
-Usage: ./download.py <truefx-username> <truefx-password> [download-path] [currency1,currency2,... year1,year2,... month1,month2,...]
+Usage: ./download.py truefx-username truefx-password [download-path] [currency1,currency2,... year1,year2,... month1,month2,...]
 
 1. You must provide a truefx username and password at a minimum. This will download all available data to the current working directory - use this if you want everything
 2. Optionally, you can provide a preferred download path in the format: '/some/path' note the lack of trailing '/'
