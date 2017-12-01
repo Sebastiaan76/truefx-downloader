@@ -5,6 +5,7 @@ db = "dbname=truefxdb user=sebastiaan"
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
+
 def get_ticks(currency, start_date, end_date):
     """This function returns a tuple of tuples containing STR representations of the data
     dates should be entered in the following format: '2017-10-31 13:45:59.000'

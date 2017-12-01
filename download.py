@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from clint.textui import progress
+import sys
+import os
 
 
 def download_file(url, download_path):
@@ -48,4 +50,19 @@ def find_files(username, password, download_path):
     return
 
 if __name__ == "__main__":
-    find_files('YOUR-USER-NAME', 'YOUR-PASSWORD', '/your/path/')
+    def main():
+        if len(sys.argv) <=2:
+            print("\nusage: python download.py <truefx-username> <password> [save path]\nIf no save path given, current directory is used")
+            return 1
+        elif len(sys.argv) == 3:
+            path = "{}/".format(os.getcwd())
+            find_files(sys.argv[1], sys.argv[2], path)
+        elif len(sys.argv) == 4:
+            if not os.path.exists(sys.argv[3]):
+                os.mkdir(sys.argv[3])
+            if sys.argv[3][-1] != '/':
+                path = "{}/".format(sys.argv[3])
+            else:
+                path = sys.argv[3]
+            find_files(sys.argv[1], sys.argv[2], path)
+main()
