@@ -49,11 +49,6 @@ Unzipped CSV files are ~100 to 600Mb each, so bear this in mind if you plan to a
 
 note: if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
 
-TODOs:
-1. make it possible to select only certain currencies
-2. make it possible to select on certain years
-3. more robust error checking ( ok, some checking )
-
 This script is pretty hacky. If the truefx.com folk change things on the website html, this will likely break. But as-is - it works fine.
 
 Bulk-insert.py
