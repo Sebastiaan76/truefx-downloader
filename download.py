@@ -65,7 +65,7 @@ if __name__ == "__main__":
         global months
 
         if len(sys.argv) <=2 or len(sys.argv) > 7:
-            print("\nUsage: python download.py <truefx-username> <password> [save path]\nIf no save path given, current directory is used")
+            print("\nUsage: python download.py <truefx-username> <password> [save path currencies years months]\nIf no save path given, current directory is used")
             return 1
         elif len(sys.argv) == 3:
             path = "{}/".format(os.getcwd())
