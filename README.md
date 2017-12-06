@@ -43,7 +43,7 @@ will download only USDJPY and AUDUSD for March & April of 2016 and 2017
 
 spaces between the options, but no spaces between comma separated items, i.e. AUDUSD,USDJPY and not AUDUSD, USDJPY.
 
-If you are starting from scratch and wanting to download everything truefx have, I would recommend doing this overnight. there are 15 currencies, 9 years worth of data. So (15 x 12) x 9years = 1620 files @ ~30 - 70Mb each (although 2009 starts in May - so not quite 1620 ). The connection truefx has isn't terribly fast, so you'll be waiting a while. Also, you are looking at 70 - 80Gb of disk space - so might be worth streaming this straight to the NAS, or clearing some space if you intend to download the whole lot.
+If you are starting from scratch and wanting to download everything truefx have, I would recommend doing this overnight. there are 15 currencies, 9 years worth of data. So (15 x 12) x 9years = 1620 files @ ~30 - 700Mb each (although 2009 starts in May - so not quite 1620 ). The connection truefx has isn't terribly fast, so you'll be waiting a while. Also, you are looking at 70 - 80Gb of disk space - so might be worth streaming this straight to the NAS, or clearing some space if you intend to download the whole lot.
 
 Unzipped CSV files are ~100 to 600Mb each, so bear this in mind if you plan to add to this script to unzip, add to database etc. 
 
