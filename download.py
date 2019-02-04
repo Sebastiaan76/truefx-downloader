@@ -58,7 +58,6 @@ def find_files(username, password, download_path):
         traverse(html, session, download_path)
     return
 
-if __name__ == "__main__":
 
     def main():
         global currencies
@@ -95,4 +94,6 @@ if __name__ == "__main__":
             months = sys.argv[6]
             find_files(sys.argv[1], sys.argv[2], path)
 
-main()
+         
+if __name__ == "__main__":
+    main()
