@@ -4,7 +4,7 @@ Python script to download all historical FX data from www.truefx.com
  TrueFX download script and
  Bulk Import script
 
-download.py
+## download.py
 
 This script will download selected, or all available historical data from https://www.truefx.com
 
@@ -22,22 +22,22 @@ Usage: ```./download.py truefx-username truefx-password [download-path] [currenc
 
 Examples:
 
-$ ./downloader.py JohnUser Mypassword
+```$ ./downloader.py JohnUser Mypassword```
 
 will download everything to current working directory
 
 
-$./downloader.py JohnUser Mypassword /home/JohnUser/Mydir
+```$./downloader.py JohnUser Mypassword /home/JohnUser/Mydir```
 
 Will download everything to Mydir
 
 
-$./downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD
+```$./downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD```
 
 will download only USDJPY and AUDUSD. But will get all years/months available
 
 
-$.downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD 2017,2016 03,04
+```$.downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD 2017,2016 03,04```
 
 will download only USDJPY and AUDUSD for March & April of 2016 and 2017
 
@@ -47,11 +47,11 @@ If you are starting from scratch and wanting to download everything truefx have,
 
 Unzipped CSV files are ~100 to 600Mb each, so bear this in mind if you plan to add to this script to unzip, add to database etc. 
 
-note: if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
+**note:** if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
 
 This script is pretty hacky. If the truefx.com folk change things on the website html, this will likely break. But as-is - it works fine.
 
-Bulk-insert.py
+## Bulk-insert.py
 
 This script will take a dir with the resulting CSV files (once you've unzipped them) and load a Postgres Database with the tick data. 
 You'll need to create the database & user first.
