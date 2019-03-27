@@ -53,7 +53,7 @@ example:
 `python downloader.py -c AUDUSD -m 03,04 -y 2017,2018 -p /home/joeblogs/mydata/ joeblogs apssword123`
 
 The above would login as joeblogs, download March & April of 2017 & 2018 for AUDUSD to the specified path.
-A total of 4 files. They would then be unzipped and the zip files deleted, leaving 4 CSV files. Ready for...
+A total of 4 files. They would then be unzipped and the zip files deleted, leaving 4 CSV files. Ready for _Database.py_
 
 _*Note*_: truefx.com uses a Godaddy SSL cert that doesn't seem to be recognized by the CA store used by the python requests
 module this tool uses. Hence I've provided the certificate chain in this repo, as well as the original link to
