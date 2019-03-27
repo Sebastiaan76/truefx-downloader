@@ -56,8 +56,8 @@ The above would login as joeblogs, download March & April of 2017 & 2018 for AUD
 A total of 4 files. They would then be unzipped and the zip files deleted, leaving 4 CSV files. Ready for _Database.py_
 
 _*Note*_: truefx.com uses a Godaddy SSL cert that doesn't seem to be recognized by the CA store used by the python requests
-module this tool uses. Hence I've provided the certificate chain in this repo, as well as the original link to
-Godaddy if you want to download it directly from there. As long as you have that in the working directory, all will be well.
+module this tool uses. Hence I've provided the certificate chain in this repo as 'gd_bundle-g2-g1.crt'. Alternatively, you can download it directly here:
+<https://ssl-ccp.godaddy.com/repository/gd_bundle-g2-g1.crt> . As long as you have that in the working directory, all will be well. Same link is provided in the comments.
 
 
 ## Database.py
