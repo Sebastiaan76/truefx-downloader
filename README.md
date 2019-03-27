@@ -1,8 +1,12 @@
 # truefx-downloader
-Python script to download all historical FX data from www.truefx.com
+This repository contains a number of useful tools to download, transform and import historical FX data from http://www.truefx.com.
 
- TrueFX download script and
- Bulk Import script
+These are: 
+* downloader.py - use this to download historical data from truefx.com.
+* Database.py - use this to import the resulting directory of CSV files into a postgres database
+* Candle.py - use this to transform tick data from either CSV or postgres into OHLC data - i.e. candlesticks.
+
+ 
 
 ## download.py
 
@@ -10,48 +14,70 @@ This script will download selected, or all available historical data from https:
 
 Some things you will need to do:
 1. sign up for an account with www.truefx.com ( it's free )
-2. save the script to your preferred location and chmod +755 download.py
+2. save the script to your preferred location and chmod +755 downloader.py
 
-download.py takes a number of required and optional commandline arguments
+```
+usage: python downloader.py [-h] [-c CURRENCIES] [-y YEARS] [-m MONTHS] [-p PATH] username password
 
-Usage: ```./download.py truefx-username truefx-password [download-path] [currency1,currency2,... year1,year2,... month1,month2,...]```
+NOTE: username and password must be provided. If no other options are
+specified, then all available files will be downloaded to the current working
+directory.
 
-1. You must provide a truefx username and password at a minimum. This will download all available data to the current working directory - use this if you want everything
-2. Optionally, you can provide a preferred download path in the format: '/some/path' note the lack of trailing '/'
-3. If you have given a full path, you can then also specify specific currencies, and/or years and/or months
+positional arguments:
+  username              Your www.truefx.com username
+  password              Your www.truefx.com password
 
-Examples:
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CURRENCIES, --currencies CURRENCIES
+                        the currencies you want to download. Comma separated
+                        without spaces or slashes. The following currencies
+                        are supported:AUDJPY,AUDNZD,AUDUSD,CADJPY,CHFJPY,EURCH
+                        F,EURGBP,EURJPY,EURUSD,GBPJPY,GBPUSD,NZDUSD,USDCAD,USD
+                        CHF,USDJPY
+  -y YEARS, --years YEARS
+                        the year or years you want downloaded. comma
+                        separated, no spaces. i.e. 2017,2018. valid options
+                        are 2009 to present year
+  -m MONTHS, --months MONTHS
+                        Month or months of data to download for given year(s),
+                        comma separated, no spaces, 2 decimal spaces i.e.
+                        01,02,03 ... 12. 01 thru 12 are valid options
+  -p PATH, --path PATH  Path of where you would like the downloaded files.
+                        Directories will be created if they don't exist. If
+                        not specified, then the current working directory is
+                        used e.g /home/john/myfxstuff
+   ``` 
 
-```$ ./downloader.py JohnUser Mypassword```
+example:
+`python downloader.py -c AUDUSD -m 03,04 -y 2017,2018 -p /home/joeblogs/mydata/ joeblogs apssword123`
 
-will download everything to current working directory
+The above would login as joeblogs, download March & April of 2017 & 2018 for AUDUSD to the specified path.
+A total of 4 files. They would then be unzipped and the zip files deleted, leaving 4 CSV files. Ready for _Database.py_
 
-
-```$./downloader.py JohnUser Mypassword /home/JohnUser/Mydir```
-
-Will download everything to Mydir
-
-
-```$./downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD```
-
-will download only USDJPY and AUDUSD. But will get all years/months available
+_*Note*_: truefx.com uses a Godaddy SSL cert that doesn't seem to be recognized by the CA store used by the python requests
+module this tool uses. Hence I've provided the certificate chain in this repo as **gd_bundle-g2-g1.crt**. Alternatively, you can download it directly here:
+<https://ssl-ccp.godaddy.com/repository/gd_bundle-g2-g1.crt> . As long as you have that in the working directory, all will be well. Same link is provided in the comments.
 
 
-```$.downloader.py JohnUser Mypassword /home/JohnUser USDJPY,AUDUSD 2017,2016 03,04```
+## Database.py
+This script will take a directory containing TrueFX CSV files, and import them into a Postgres Database.
+You'll need to create a blank database called 'fx_data'. The script will create tables etc.
 
-will download only USDJPY and AUDUSD for March & April of 2016 and 2017
+Can you change the name of the database? sure. Just be sure to change all references to 'fx_data' in the script too.
 
-spaces between the options, but no spaces between comma separated items, i.e. AUDUSD,USDJPY and not AUDUSD, USDJPY.
+This script will also take a hash of the file, so you can't import a CSV file twice, so if you download more files later, and re-run
+the Database.py script to import, it'll just skip the previously imported ones. 
 
-If you are starting from scratch and wanting to download everything truefx have, I would recommend doing this overnight. there are 15 currencies, 9 years worth of data. So (15 x 12) x 9years = 1620 files @ ~30 - 70Mb each (although 2009 starts in May - so not quite 1620 ). The connection truefx has isn't terribly fast, so you'll be waiting a while. Also, you are looking at 70 - 80Gb of disk space - so might be worth streaming this straight to the NAS, or clearing some space if you intend to download the whole lot.
+To use, simply edit the details at the bottom of the file in the db_obj = Import(.....) call.
 
-Unzipped CSV files are ~100 to 600Mb each, so bear this in mind if you plan to add to this script to unzip, add to database etc. 
+## Candle.py
 
-**note:** if you get a Traceback error regarding SSL Handshake - ensure you have the Go Daddy CA certs installed on your system ( export them from firefox ). If you can't be bothered doing that, you can simply change the urls in the script to be http instead of https - but then your password will be sent in the clear.
+This script will take a CSV file, or postgres database table of ticks (i.e. what you would have ended up with after running Database.py)
+and create a new table of OHLC or Candlestick data for a desired timeframe. The number of ticks that make up the Candle will be used as volume - i.e. tick volume.
 
-This script is pretty hacky. If the truefx.com folk change things on the website html, this will likely break. But as-is - it works fine.
+To use this tool, simply edit the variables at the bottom where indicated: currency, timeframe and database.
+currency should be a string as so: 'EURCHF' or whichever currency you need. timeframe should be an integer representing the number of minutes in the candle - i.e. the timeframe.
+Typically 1, 5, 15, 60, 240 min etc and database, you'll need to edit the dictionary values with the appropriate database connection details for your postgres database.
 
-## Bulk-insert.py
 
-This script will take a dir with the resulting CSV files (once you've unzipped them) and load a Postgres Database with the tick data. 
-You'll need to create the database & user first.
