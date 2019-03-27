@@ -14,7 +14,7 @@ This script will download selected, or all available historical data from https:
 
 Some things you will need to do:
 1. sign up for an account with www.truefx.com ( it's free )
-2. save the script to your preferred location and chmod +755 download.py
+2. save the script to your preferred location and chmod +755 downloader.py
 
 ```
 usage: python downloader.py [-h] [-c CURRENCIES] [-y YEARS] [-m MONTHS] [-p PATH] username password
