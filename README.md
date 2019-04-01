@@ -1,3 +1,5 @@
+Hi Seb!
+
 # truefx-downloader
 This repository contains a number of useful tools to download, transform and import historical FX data from http://www.truefx.com.
 
