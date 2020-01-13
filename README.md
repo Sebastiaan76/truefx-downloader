@@ -1,5 +1,5 @@
 NOTE:
-This Code currently doesn't work. The folks at www.truefx.com did a complete site redesign, and as such I'll need to basically re-write this script. Currently time doesn't allow that, so feel free to use this code or parts of it to make your own re-factor!
+The main download script download.py currently doesn't work. The folks at www.truefx.com did a complete site redesign, and as such I'll need to basically re-write this script. Currently time doesn't allow that, so feel free to use this code or parts of it to make your own re-factor!
 
 
 # truefx-downloader
