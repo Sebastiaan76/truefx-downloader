@@ -1,3 +1,7 @@
+NOTE:
+This Code currently doesn't work. The folks at www.truefx.com did a complete site redesign, and as such I'll need to basically re-write this script. Currently time doesn't allow that, so feel free to use this code or parts of it to make your own re-factor!
+
+
 # truefx-downloader
 This repository contains a number of useful tools to download, transform and import historical FX data from http://www.truefx.com.
 
