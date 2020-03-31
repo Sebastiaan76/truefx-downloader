@@ -1,5 +1,5 @@
-NOTE:
-The main download script downloader.py currently doesn't work. The folks at www.truefx.com did a complete site redesign, and as such I'll need to basically re-write this script. Currently time doesn't allow that, so feel free to use this code or parts of it to make your own re-factor!
+
+Since these scripts were written, a few things have changed. TrueFX totally re-designed the site and have now limited the amount of historical data available, and are charging a fortune to access it - as such, you can just download the last year's data manually. The download.py script is not going to help much and is really just here for posterity.
 
 The Database.py and Candle.py scripts should still be very useful once you have the CSV files downloaded. So that's some consolation :)
 
@@ -8,13 +8,13 @@ The Database.py and Candle.py scripts should still be very useful once you have 
 This repository contains a number of useful tools to download, transform and import historical FX data from http://www.truefx.com.
 
 These are: 
-* downloader.py - use this to download historical data from truefx.com.
+* downloader.py - [No longer works] use this to download historical data from truefx.com.
 * Database.py - use this to import the resulting directory of CSV files into a postgres database
 * Candle.py - use this to transform tick data from either CSV or postgres into OHLC data - i.e. candlesticks.
 
  
 
-## download.py
+## download.py [ no longer works ]
 
 This script will download selected, or all available historical data from https://www.truefx.com
 
